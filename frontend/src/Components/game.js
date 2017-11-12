@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './board.js';
+import $ from 'jquery';
 
 class Game extends React.Component {
 
@@ -11,6 +12,7 @@ class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
+            saveGame: [Array(9).fill(null)],
         }
     }
 
@@ -18,6 +20,7 @@ class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+        this.state.saveGame.push(squares);
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
@@ -38,8 +41,22 @@ class Game extends React.Component {
         })
     }
 
-    saveGame(id) {
-        console.log('i want to save');
+    saveGame(id, save, win) {
+        console.log('i want to save this id: ' + id);
+        console.log(save);
+        $.ajax({
+            method: "POST",
+            url: "http://localhost:8000/savegame",
+            data: {
+                player: id,
+                win: win,
+                board: save
+            }
+        }).done(() => {
+            this.resetGame();
+        })
+
+
     }
 
     resetGame() {
@@ -50,6 +67,7 @@ class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
+            saveGame: [Array(9).fill(null)],
         })
     }
 
@@ -58,6 +76,7 @@ class Game extends React.Component {
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
         const cat = this.state.stepNumber >= 9;
+        const sendSave = this.state.saveGame;
 
         const moves = history.map((step, move) => {
             const desc = move ?
@@ -72,23 +91,27 @@ class Game extends React.Component {
 
         let save;
         let status;
+        // let historyArr = [];
+        let win;
+        let saveButton = <button onClick={() =>this.saveGame(id, sendSave, win)}>Save Game</button>;
         let reset = <button onClick={() => this.resetGame()}>Reset Game</button>;
         // this id will be gotten by a token or something
         let id = 1;
         if (winner) {
-            let historyArr = history.map(function(x) {
-                return x.squares;
-            });
+            // historyArr = history.map(function(x) {
+            //     return x.squares;
+            // });
+            console.log(sendSave[0]);
             status = 'Winner, Winner, Chicken dinner: ' + winner;
-            console.log(historyArr);
-            save = <button onClick={() =>this.saveGame(id)}>Save Game</button>
+            win = true;
+            save = saveButton;
         } else if (cat) {
-            let historyArr = history.map(function(x) {
-                return x.squares;
-            });
-            console.log(historyArr)
+            // historyArr = history.map(function(x) {
+            //     return x.squares;
+            // });
             status = "Cat!"
-            save = <button>Save Game</button>
+            win = null;
+            save = saveButton;
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
