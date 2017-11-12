@@ -40,7 +40,6 @@ class Game extends React.Component {
     }
 
     saveGame(id, history, win) {
-        console.log('i want to save this id: ' + id);
         $.ajax({
             method: "POST",
             url: "http://localhost:8000/savegame",
@@ -57,7 +56,6 @@ class Game extends React.Component {
     }
 
     resetGame() {
-        console.log('i want to reset');
         this.setState({
             history: [{
                 squares: Array(9).fill(null),
@@ -91,6 +89,7 @@ class Game extends React.Component {
         let reset = <button onClick={() => this.resetGame()}>Reset Game</button>;
         // this id will be gotten by a token or something
         let id = 1;
+        
         if (winner) {
             status = 'Winner, Winner, Chicken dinner: ' + winner;
             win = true;
