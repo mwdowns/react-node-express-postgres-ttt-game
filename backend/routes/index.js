@@ -4,6 +4,16 @@ const express = require('express'),
     router = express.Router(),
     db = pgp('ttt_db');
 
+router.get('/:id', function(req, res) {
+    let player = req.params.id;
+    db.query('SELECT name FROM player WHERE player.id = $1', player)
+    .then(data => {
+        res.json({data: data});
+    })
+    .catch(error => {
+        res.json({error: error});
+    })
+})
 
 router.get('/players', function (req, res) {
     let players = [];
@@ -22,7 +32,9 @@ router.get('/players', function (req, res) {
 
 router.post('/savegame', function (req, res) {
     let player = req.body.player;
-    let win = req.body.win;
+    let win = req.body.win === ''
+                ? null
+                : req.body.win;
     let body = req.body;
     let date = new Date();
     let board = Object.keys(body).map(function(key) {

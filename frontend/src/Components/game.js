@@ -81,14 +81,14 @@ class Game extends React.Component {
                 </li>
             );
         });
-
+        let id = this.props.playerID;
         let save;
         let status;
         let win;
         let saveButton = <button onClick={() =>this.saveGame(id, history, win)}>Save Game</button>;
         let reset = <button onClick={() => this.resetGame()}>Reset Game</button>;
         // this id will be gotten by a token or something
-        let id = 1;
+        
         
         if (winner) {
             status = 'Winner, Winner, Chicken dinner: ' + winner;
@@ -107,7 +107,7 @@ class Game extends React.Component {
                 <div className="game-board">
                     <Board
                         squares = {current.squares}
-                        onClick ={(i) => this.handleClick(i)}
+                        onClick = {(i) => this.handleClick(i)}
                         winner = {winner}
                     />
                 </div>
