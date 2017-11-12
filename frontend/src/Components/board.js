@@ -1,3 +1,4 @@
+import React from 'react';
 import Square from './square.js';
 
 class Board extends React.Component {
