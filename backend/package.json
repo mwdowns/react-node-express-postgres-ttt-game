@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for tic-tac-toe",
+  "main": "backend.js",
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "author": "mwdowns",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
+    "http": "0.0.0",
+    "pg-promise": "^7.3.1",
+    "uuid": "^3.1.0"
+  }
+}
