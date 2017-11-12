@@ -42,6 +42,17 @@ class Game extends React.Component {
         console.log('i want to save');
     }
 
+    resetGame() {
+        console.log('i want to reset');
+        this.setState({
+            history: [{
+                squares: Array(9).fill(null),
+            }],
+            stepNumber: 0,
+            xIsNext: true,
+        })
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -61,7 +72,7 @@ class Game extends React.Component {
 
         let save;
         let status;
-        let reset = <button>Reset Game</button>;
+        let reset = <button onClick={() => this.resetGame()}>Reset Game</button>;
         // this id will be gotten by a token or something
         let id = 1;
         if (winner) {
